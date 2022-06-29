@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='utf-8'?>
+<ImplementationInfo xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" schemaVersion="1.1.0" 
+                    contract="Robin.Files.FileCopy" version="1.5.3" 
+                    execType="python" xsi:noNamespaceSchemaLocation="ActionImp/1.1.0/ActionImp.xsd">
+  <RequiredInterfaces>
+    <RequiredInterface/>
+  </RequiredInterfaces>
+  <RequireUiThread>false</RequireUiThread>
+  <PackageName>Robin.Files.FileCopy-Python</PackageName>
+  <Exceptions>
+    <ExceptionInfo typeID="Robin.Exception.ParameterNotFound" version="2.0.0"/>
+    <ExceptionInfo typeID="Robin.Exception.FileNotFound" version="2.0.0"/>
+    <ExceptionInfo typeID="Robin.Exception.FileNotAvailable" version="2.0.0"/>
+    <ExceptionInfo typeID="Robin.Exception.DirectoryNotFound" version="2.0.0"/>
+    <ExceptionInfo typeID="Robin.Exception.DirectoryNotAvailable" version="2.0.0"/>
+    <ExceptionInfo typeID="Robin.Exception.ValidationError" version="2.0.0" />
+  </Exceptions>
+</ImplementationInfo>
