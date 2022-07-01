@@ -30,21 +30,24 @@ def main():
             break
 
     
+    try:
 
-    xml_file = ET.parse(robin_path)
-    root = xml_file.getroot()
-    keys = dict(root.attrib)
+        setup_key, robin_key = ''
+        xml_file = ET.parse(robin_path)
+        root = xml_file.getroot()
+        keys = dict(root.attrib)
 
-    robin_key = keys['version']
-    setup_key = ''
+        robin_key = keys['version']
 
-    with open(setup_path, 'r') as f:
-        for line in f:
-            if 'version=' in line:
-                setup_key = line.split('=')[1].strip('\n').strip(',').strip("'")
-                break
+        with open(setup_path, 'r') as f:
+            for line in f:
+                if 'version=' in line:
+                    setup_key = line.split('=')[1].strip('\n').strip(',').strip("'")
+                    break
 
-    print("Correct" if robin_key == setup_key else "Error")
+        print("Correct" if robin_key == setup_key else "Error")
+    except(FileNotFoundError):
+        print("File not found")
 
 
 
