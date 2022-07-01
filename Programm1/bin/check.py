@@ -1,6 +1,7 @@
 import xml.etree.cElementTree as ET
 import argparse
 import os
+from pathlib import Path
 
 ''' На вход прогамме в командной строке подается путь до директории, 
 где располагаются файлы steup.py и xml файл с приставкой .robin-impinfo. Программа сравниваниет
@@ -13,7 +14,7 @@ def main():
 
     #tree = os.walk('Summer22/FileCopy')
     parser = argparse.ArgumentParser()
-    parser.add_argument('tree_name', nargs='?')
+    parser.add_argument('tree_name', type=Path, help='Корневая директория проекта')
     args = parser.parse_args()
     tree = os.walk(args.tree_name)
     robin_path = setup_path = ''
