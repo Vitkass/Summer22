@@ -1,9 +1,0 @@
-setup.py
-Ckeck.egg-info/PKG-INFO
-Ckeck.egg-info/SOURCES.txt
-Ckeck.egg-info/dependency_links.txt
-Ckeck.egg-info/entry_points.txt
-Ckeck.egg-info/top_level.txt
-bin/__init__.py
-bin/check.py
-bin/test.py
