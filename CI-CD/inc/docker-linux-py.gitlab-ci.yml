@@ -1,0 +1,53 @@
+# Externals:
+# EXT_DOCKER_PXY (e.g.: EXT_DOCKER_PXY="localhost:5000/")
+variables:
+  DEFAULT_DOCKER_PXY: ""
+
+
+# Issue: variables can have different names for same meaning
+# Robin vars can be:
+#$LOGIN
+#$NEXUS_URL (packages-dev.rpa-robin.ru)
+#$PASSWORD
+
+# Sandbox / local settings:
+#$HOST_NAME (packages-dev.rpa-robin.ru)
+#$USER
+#$PASSWORD
+
+# Output should be:
+#NEXUS_HOST: $HOST_NAME
+#NEXUS_USR: $USER
+#NEXUS_PWD: $PASSWORD
+
+
+.jprofile-docker-linux-py:
+  image: "${DOCKER_PXY}python:3.8.13-slim-bullseye"
+  # Runner glued by tags:
+  tags:
+    - centos-docker
+  cache: 
+    paths: 
+      - .cache/pip 
+      - .buildvenv/ 
+    # Load cache before start of job
+    policy: pull 
+  before_script:
+    # Fallback variables to different configs:
+    - NEXUS_HOST="${NEXUS_URL:-$HOST_NAME}"
+    - NEXUS_USR="${LOGIN:-$USER}"
+    - NEXUS_PWD=$PASSWORD
+    # Setup environment
+    - export PIP_DISABLE_PIP_VERSION_CHECK=1
+    - export PIP_NO_CACHE_DIR=1
+    - export PIP_TRUSTED_HOST="${NEXUS_HOST}"
+    - export PIP_INDEX_URL="http://${NEXUS_USR}:${NEXUS_PWD}@${NEXUS_HOST}/repository/pypi-external/simple/"
+    - export PIP_EXTRA_INDEX_URL="http://${NEXUS_USR}:${NEXUS_PWD}@${NEXUS_HOST}/repository/pypi-local/simple/"
+    - "[ ! -d '.buildvenv' ] && python3 -m venv .buildvenv"
+    - echo "Activating venv"
+    - source .buildvenv/bin/activate
+    - python -m pip install --upgrade build
+    - python -m pip install wheel setuptools twine
+    - python -m pip install Cython --install-option="--no-cython-compile"
+  after_script:
+    - "[ -z '${deactivate+x}' ] && deactivate"

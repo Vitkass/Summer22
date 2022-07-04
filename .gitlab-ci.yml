@@ -1,0 +1,41 @@
+variables:
+  LOGIN: $NEXUS_USR
+  PASSWORD: $NEXUS_PWD
+  NEXUS_URL: $NEXUS_HOST
+
+stages:
+  - build
+
+
+# to-do: later - move to remote storage:
+# remote: 'https://gitlab.com/awesome-project/raw/main/.before-script-template.yml'
+include:
+  - '/CI-CD/inc/docker-linux-py.gitlab-ci.yml'
+
+
+BuildPyPackages:
+  stage: build
+  extends:
+    - .jprofile-docker-linux-py
+  script:
+    - python setup.py bdist_wheel
+  artifacts:
+    name: "${CI_PROJECT_NAME}-${CI_JOB_NAME}-${CI_PIPELINE_ID}"
+    paths:
+      - dist/*
+    expire_in: 1 day
+
+
+# PublishPyPackages:
+#   stage: deploy
+#   extends:
+#     - .jprofile-docker-linux-py
+#   rules:
+#      - if: $CI_COMMIT_MESSAGE =~ /PublishEngine!/
+#   script:
+#     - twine upload --skip-existing --repository-url $REPOSITORY_URL -u $NEXUS_USR -p $NEXUS_PWD --verbose --disable-progress-bar dist/*
+#   allow_failure: true
+#   dependencies:
+#     - BuildPyPackages
+
+
